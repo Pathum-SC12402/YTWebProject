@@ -1,24 +1,24 @@
-name: Deploy HTML Website via SSH
+name: Deploy Website
 
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch
+      - main  # or your deployment branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Copy files to server via SSH
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        source: "./*"             # Adjust if your HTML files are in a folder like `dist/` or `build/`
-        target: "/www/wwwroot/pathumdilshan.run.place"   # Replace with your actual server path
+      - name: Deploy via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./*"  # Adjust the source path as needed
+          target: "/www/wwwroot/pathumdilshan.run.place"
